@@ -8,9 +8,9 @@ import java.util.List;
 public interface ThemeRepository {
     public List<Theme> getAllThemes();
 
-    public List<Theme> getOpenTheme(Date date);
+    public List<Theme> getOpenTheme();
 
-    public List<Theme> getCloseTheme(Date date);
+    public List<Theme> getCloseTheme();
 
     public Theme getThemeById(int id);
 

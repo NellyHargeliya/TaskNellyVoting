@@ -28,6 +28,7 @@ public class ThemeRepositoryImlp implements ThemeRepository {
     private final JdbcOperations jdbc;
     private final SimpleJdbcInsertOperations insert;
     private final ThemeRowMapper themeRowMapper;
+    private Date date = new Date();
 
     /**
      * This does the initialization for Jdbc operations and RowMapping
@@ -50,7 +51,8 @@ public class ThemeRepositoryImlp implements ThemeRepository {
      * This has the logic to get the theme with open for the voting
      */
     @Override
-    public List<Theme> getOpenTheme(Date date) {
+    public List<Theme> getOpenTheme() {
+
         return jdbc.query(FIND_OPEN_THEME, new Object[]{date}, themeRowMapper);
     }
 
@@ -58,7 +60,7 @@ public class ThemeRepositoryImlp implements ThemeRepository {
      * This has the logic to get the theme with close for the voting
      */
     @Override
-    public List<Theme> getCloseTheme(Date date) {
+    public List<Theme> getCloseTheme() {
         return jdbc.query(FIND_CLOSE_THEME, new Object[]{date}, themeRowMapper);
     }
 
