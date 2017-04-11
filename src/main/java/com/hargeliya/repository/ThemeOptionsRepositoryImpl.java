@@ -6,10 +6,11 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsertOperations;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.util.List;
-
+@Component
 public class ThemeOptionsRepositoryImpl implements ThemeOptionRepository {
     private static final String FIND_QUANTITY_BY_ID = "SELECT quantity FROM theme_option WHERE idOption=?";
     private static final String INSERT_OPTION = "INSERT INTO theme_option (nameOption, quantity, idTheme) VALUES( ?, ?, ?)";

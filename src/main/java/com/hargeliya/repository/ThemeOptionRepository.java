@@ -1,9 +1,10 @@
 package com.hargeliya.repository;
 
 import com.hargeliya.models.ThemeOption;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Component
 public interface ThemeOptionRepository {
     public int getThemeOptionQuantity(int id);
 

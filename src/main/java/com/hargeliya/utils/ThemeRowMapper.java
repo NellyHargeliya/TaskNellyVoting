@@ -2,11 +2,12 @@ package com.hargeliya.utils;
 
 import com.hargeliya.models.Theme;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
+@Component
 public class ThemeRowMapper implements RowMapper<Theme> {
 
     @Override

@@ -1,10 +1,11 @@
 package com.hargeliya.repository;
 
 import com.hargeliya.models.Theme;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
-
+@Component
 public interface ThemeRepository {
     public List<Theme> getAllThemes();
 
