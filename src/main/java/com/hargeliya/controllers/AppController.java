@@ -5,19 +5,24 @@ import com.hargeliya.models.ThemeOption;
 import com.hargeliya.repository.ThemeOptionRepository;
 import com.hargeliya.repository.ThemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 /**
  * Controller class that handles all GET and POST requests
  */
 @RestController
-@RequestMapping("theme")
+
 public class AppController {
+    @Autowired
     private ThemeRepository themeRepo;
 
+    @Autowired
     private ThemeOptionRepository themeOptionRepo;
 
 
@@ -31,7 +36,7 @@ public class AppController {
      * This handles GET /theme
      * It returns all the theme details
      */
-    @GetMapping
+    @RequestMapping(value="/themes", method = RequestMethod.GET)
     public List<Theme> getAllTheme() {
         return themeRepo.getAllThemes();
     }
@@ -40,7 +45,8 @@ public class AppController {
      * This handles POST /theme
      * It adds a theme detail given in the request body to the Theme table
      */
-    @PostMapping
+    @RequestMapping(value = "/themes", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.CREATED)
     public Theme addTheme(@RequestBody @Validated Theme theme) {
         themeRepo.addTheme(theme);
         return theme;
@@ -65,8 +71,8 @@ public class AppController {
         return themeRepo.getCloseTheme();
     }
 
-    @GetMapping
-    public int getThemeOptionQuantity(int id) {
+    @GetMapping("/getTheme/{id}")
+    public int getThemeOptionQuantity(@RequestParam("id") int id) {
         return themeOptionRepo.getThemeOptionQuantity(id);
     }
 
@@ -81,10 +87,9 @@ public class AppController {
         themeOptionRepo.addVote(id);
     }
 
-    @GetMapping
-    public List<ThemeOption> getAllOptionsByIdTheme(int idTheme) {
+    @GetMapping("/getOptions/{id}")
+    public List<ThemeOption> getAllOptionsByIdTheme(@RequestParam("id")int idTheme) {
         return themeOptionRepo.getAllOptionsByIdTheme(idTheme);
     }
-
 
 }
