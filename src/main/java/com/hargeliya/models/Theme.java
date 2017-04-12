@@ -57,4 +57,20 @@ public class Theme {
     public void setUrlTheme(String urlTheme) {
         this.urlTheme = urlTheme;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Theme)) return false;
+        Theme theme = (Theme) obj;
+        if (getIdTheme() != null ? !getIdTheme().equals(theme.getIdTheme()) : theme.getIdTheme() != null) return false;
+        if (getNameTheme() != null ? !getNameTheme().equals(theme.getNameTheme()) : theme.getNameTheme() != null)
+            return false;
+        if (getStartVoting() != null ? !getStartVoting().equals(theme.getStartVoting()) : theme.getStartVoting() != null)
+            return false;
+        if (getEndVoting() != null ? !getEndVoting().equals(theme.getEndVoting()) : theme.getEndVoting() != null)
+            return false;
+        return getUrlTheme() != null ? !getUrlTheme().equals(theme.getUrlTheme()) : theme.getUrlTheme() == null;
+    }
+
 }

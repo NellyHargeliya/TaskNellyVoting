@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class ThemeOption {
     private Integer idOption;
     private String nameOption;
-    private int quantity;
-    private Integer idTheme;
+    private Integer quantity;
+    private Theme theme;
 
-    public ThemeOption(Integer idOption, String nameOption, int quantity, Integer idTheme) {
+    public ThemeOption(Integer idOption, String nameOption, Integer quantity, Integer idTheme) {
     }
 
     public Integer getIdOption() {
@@ -28,19 +28,44 @@ public class ThemeOption {
         this.nameOption = nameOption;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public Integer getIdTheme() {
-        return idTheme;
+    public Theme getTheme() {
+        return theme;
     }
 
-    public void setIdTheme(Integer idTheme) {
-        this.idTheme = idTheme;
+    public void setIdTheme(Theme theme) {
+        this.theme = theme;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof ThemeOption)) return false;
+
+        ThemeOption that = (ThemeOption) obj;
+
+        if (getIdOption() != null ? !getIdOption().equals(that.getIdOption()) : that.getIdOption() != null)
+            return false;
+        if (getNameOption() != null ? !getNameOption().equals(that.getNameOption()) : that.getNameOption() != null)
+            return false;
+        return (getQuantity() != null ? getQuantity().equals(that.getQuantity()) : that.getQuantity() == null);
+
+    }
+
+    @Override
+    public String toString() {
+        return "ThemeOption{" +
+                "idOptionId=" + idOption +
+                ", nameOption='" + nameOption + '\'' +
+                ", quantity=" + quantity +
+                ", idTheme=" + theme.getIdTheme() +
+                '}';
     }
 }
