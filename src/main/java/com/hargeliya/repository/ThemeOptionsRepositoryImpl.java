@@ -40,7 +40,7 @@ public class ThemeOptionsRepositoryImpl implements ThemeOptionRepository {
 
     @Override
     public void addOptions(ThemeOption themeOption) {
-        jdbc.update(INSERT_OPTION, new Object[]{themeOption.getNameOption(), themeOption.getQuantity(), themeOption.getIdTheme()});
+        jdbc.update(INSERT_OPTION, new Object[]{themeOption.getNameOption(), themeOption.getQuantity(), themeOption.getTheme()});
 
     }
 
