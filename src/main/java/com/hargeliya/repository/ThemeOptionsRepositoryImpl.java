@@ -33,8 +33,8 @@ public class ThemeOptionsRepositoryImpl implements ThemeOptionRepository {
     }
 
     @Override
-    public int getThemeOptionQuantity(int id) {
-        return jdbc.queryForObject(FIND_QUANTITY_BY_ID, int.class, id);
+    public Integer getThemeOptionQuantity(Integer id) {
+        return jdbc.queryForObject(FIND_QUANTITY_BY_ID, Integer.class, id);
 
     }
 
@@ -45,13 +45,13 @@ public class ThemeOptionsRepositoryImpl implements ThemeOptionRepository {
     }
 
     @Override
-    public void addVote(int id) {
+    public void addVote(Integer id) {
         jdbc.update(ADD_VOTE, new Object[]{id});
 
     }
 
     @Override
-    public List<ThemeOption> getAllOptionsByIdTheme(int idTheme) {
+    public List<ThemeOption> getAllOptionsByIdTheme(Integer idTheme) {
         return jdbc.query(FIND_All_BY_ID_THEME, new Object[]{idTheme}, optionRowMapping);
 
     }

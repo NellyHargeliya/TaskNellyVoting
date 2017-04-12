@@ -68,7 +68,7 @@ public class ThemeRepositoryImlp implements ThemeRepository {
      * This has the logic to get the theme detail for a particular id
      */
     @Override
-    public Theme getThemeById(int id) {
+    public Theme getThemeById(Integer id) {
         return jdbc.queryForObject(FIND_BY_ID_THEME, new Object[]{id}, themeRowMapper);
     }
 

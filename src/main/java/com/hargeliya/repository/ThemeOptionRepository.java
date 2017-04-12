@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 @Component
 public interface ThemeOptionRepository {
-    public int getThemeOptionQuantity(int id);
+    public Integer getThemeOptionQuantity(Integer id);
 
     public void addOptions(ThemeOption themeOption);
 
-    public void addVote(int id);
+    public void addVote(Integer id);
 
-    public List<ThemeOption> getAllOptionsByIdTheme(int idTheme);
+    public List<ThemeOption> getAllOptionsByIdTheme(Integer idTheme);
 }
