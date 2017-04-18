@@ -22,15 +22,9 @@ public class ThemeOption implements Serializable {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
     @ManyToOne
-    @JoinColumn(name = "theme_id")
+    @JoinColumn(name = "idTtheme")
     @JsonBackReference
     private Theme theme;
-
-    public ThemeOption(long idOption, String nameOption, int quantity, int idTheme) {
-    }
-
-    public ThemeOption() {
-    }
 
     public Long getIdOption() {
         return idOption;

@@ -1,6 +1,5 @@
 package com.hargeliya.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
@@ -28,6 +27,7 @@ public class Theme implements Serializable {
     @JsonManagedReference
     private List<ThemeOption> themeOptions;
     @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(name = "startDate")
     private Date startDate;
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "endDate")
@@ -35,12 +35,6 @@ public class Theme implements Serializable {
     @Column(name = "urlTheme", length = 100)
     @Size(max = 100)
     private String urlTheme;
-
-    public Theme(long idTheme, String nameTheme, Date startVoting, Date endVoting, String urlTheme) {
-    }
-
-    public Theme() {
-    }
 
     public Long getIdTheme() {
         return idTheme;
@@ -133,7 +127,7 @@ public class Theme implements Serializable {
     public String toString() {
         String themeOptionToString = "{";
         for (ThemeOption option : themeOptions) {
-            themeOptionToString += themeOptions.toString();
+            themeOptionToString += option.toString();
             themeOptionToString += "; ";
         }
         themeOptionToString += "}";
