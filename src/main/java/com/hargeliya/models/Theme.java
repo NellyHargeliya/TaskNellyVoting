@@ -1,28 +1,52 @@
 package com.hargeliya.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.Id;
 
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Theme {
-    private Integer idTheme;
+
+@Entity
+public class Theme implements Serializable {
+    private static final long serialVersionUID = 20160328085401L;
+    @Id
+    @Column(name = "idTheme", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idTheme;
+    @Column(name = "nameTheme", nullable = false, length = 50, unique = true)
+    @NotEmpty
+    @Size(max = 50)
     private String nameTheme;
-    private Date startVoting;
-    private Date endVoting;
+    @OneToMany(mappedBy = "theme", cascade = javax.persistence.CascadeType.ALL)
+    @JsonManagedReference
+    private List<ThemeOption> themeOptions;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date startDate;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(name = "endDate")
+    private Date endDate;
+    @Column(name = "urlTheme", length = 100)
+    @Size(max = 100)
     private String urlTheme;
+
+    public Theme(long idTheme, String nameTheme, Date startVoting, Date endVoting, String urlTheme) {
+    }
 
     public Theme() {
     }
 
-    public Theme(Integer idTheme, String nameTheme, Date startVoting, Date endVoting, String urlTheme) {
-    }
-
-    public Integer getIdTheme() {
+    public Long getIdTheme() {
         return idTheme;
     }
 
-    public void setIdTheme(Integer idTheme) {
+    public void setIdTheme(Long idTheme) {
         this.idTheme = idTheme;
     }
 
@@ -34,20 +58,28 @@ public class Theme {
         this.nameTheme = nameTheme;
     }
 
-    public Date getStartVoting() {
-        return startVoting;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setStartVoting(Date startVoting) {
-        this.startVoting = startVoting;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public Date getEndVoting() {
-        return endVoting;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setEndVoting(Date endVoting) {
-        this.endVoting = endVoting;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public List<ThemeOption> getThemeOptions() {
+        return themeOptions;
+    }
+
+    public void setThemeOptions(List<ThemeOption> themeOptions) {
+        this.themeOptions = themeOptions;
     }
 
     public String getUrlTheme() {
@@ -59,18 +91,59 @@ public class Theme {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Theme)) return false;
-        Theme theme = (Theme) obj;
-        if (getIdTheme() != null ? !getIdTheme().equals(theme.getIdTheme()) : theme.getIdTheme() != null) return false;
-        if (getNameTheme() != null ? !getNameTheme().equals(theme.getNameTheme()) : theme.getNameTheme() != null)
-            return false;
-        if (getStartVoting() != null ? !getStartVoting().equals(theme.getStartVoting()) : theme.getStartVoting() != null)
-            return false;
-        if (getEndVoting() != null ? !getEndVoting().equals(theme.getEndVoting()) : theme.getEndVoting() != null)
-            return false;
-        return getUrlTheme() != null ? !getUrlTheme().equals(theme.getUrlTheme()) : theme.getUrlTheme() == null;
+    public int hashCode() {
+        int hash = 5;
+        hash = 73 * hash + Objects.hashCode(this.idTheme);
+        hash = 73 * hash + Objects.hashCode(this.nameTheme);
+        hash = 73 * hash + Objects.hashCode(this.themeOptions);
+        hash = 73 * hash + Objects.hashCode(this.startDate);
+        hash = 73 * hash + Objects.hashCode(this.endDate);
+        hash = 73 * hash + Objects.hashCode(this.urlTheme);
+        return hash;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Theme other = (Theme) obj;
+        if (!Objects.equals(this.nameTheme, other.nameTheme)) {
+            return false;
+        }
+        if (!Objects.equals(this.themeOptions, other.themeOptions)) {
+            return false;
+        }
+        if (!Objects.equals(this.startDate, other.startDate)) {
+            return false;
+        }
+        if (!Objects.equals(this.endDate, other.endDate)) {
+            return false;
+        }
+        return Objects.equals(this.urlTheme, other.urlTheme);
+    }
+
+    @Override
+    public String toString() {
+        String themeOptionToString = "{";
+        for (ThemeOption option : themeOptions) {
+            themeOptionToString += themeOptions.toString();
+            themeOptionToString += "; ";
+        }
+        themeOptionToString += "}";
+        return "Theme{" + "idTheme=" + idTheme +
+                ", nameTheme=" + nameTheme +
+                ", themeOptions=" + themeOptionToString +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", urlTheme=" + urlTheme + '}';
+    }
 }
+
+
