@@ -1,6 +1,7 @@
 package com.hargeliya.repository;
 
 import com.hargeliya.models.ThemeOption;
+import com.hargeliya.repository.*;
 import com.hargeliya.utils.OptionRowMapping;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.util.List;
 @Component
-public class ThemeOptionsRepositoryImpl implements ThemeOptionRepository {
+public class ThemeOptionsRepositoryImpl implements com.hargeliya.repository.ThemeOptionRepository {
     private static final String FIND_QUANTITY_BY_ID = "SELECT quantity FROM theme_option WHERE idOption=?";
     private static final String INSERT_OPTION = "INSERT INTO theme_option (nameOption, quantity, idTheme) VALUES( ?, ?, ?)";
     private static final String ADD_VOTE = "UPDATE theme_option SET quantity=quantity + 1 WHERE IDoption= ?";

@@ -38,7 +38,7 @@ public class AppController {
      */
     @RequestMapping(value="/themes", method = RequestMethod.GET)
     public List<Theme> getAllTheme() {
-        return themeRepo.getAllThemes();
+        return  themeRepo.getAllThemes();
     }
 
     /**

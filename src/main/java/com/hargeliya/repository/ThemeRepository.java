@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Component
 public interface ThemeRepository {
-    public Set<Theme> getAllThemes();
+    public List<Theme> getAllThemes();
 
     public List<Theme> getOpenTheme();
 

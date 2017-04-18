@@ -1,6 +1,7 @@
 package com.hargeliya.repository;
 
 import com.hargeliya.models.Theme;
+import com.hargeliya.repository.*;
 import com.hargeliya.utils.ThemeRowMapper;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 
 @Component
-public class ThemeRepositoryImlp implements ThemeRepository {
+public class ThemeRepositoryImlp implements com.hargeliya.repository.ThemeRepository {
     private static final String FIND_ALL_THEME = "SELECT * FROM theme";
     private static final String INSERT_THEME = "INSERT INTO theme (nameTheme, startVoting, endVoting, urlTheme) VALUES( ?, ?, ?, ?)";
     private static final String FIND_BY_ID_THEME = "SELECT * FROM theme WHERE idTheme = ?";
@@ -77,7 +78,7 @@ public class ThemeRepositoryImlp implements ThemeRepository {
      */
     @Override
     public void addTheme(Theme theme) {
-        jdbc.update(INSERT_THEME, new Object[]{theme.getNameTheme(), theme.getStartVoting(), theme.getEndVoting(), theme.getUrlTheme()});
+        jdbc.update(INSERT_THEME, new Object[]{theme.getNameTheme(), theme.getStartDate(), theme.getEndDate(), theme.getUrlTheme()});
 
     }
 }

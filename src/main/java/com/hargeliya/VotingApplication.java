@@ -27,22 +27,8 @@ public class VotingApplication extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(VotingApplication.class, args);
+        SpringApplication.run(VotingApplication.class, args)
+                .registerShutdownHook();
     }
 
-    /**
-     * Gets the sql statements from schema.sql
-     **/
-    @Value("classpath:schema.sql")
-    private Resource initSqlScript;
-
-    /**
-     * Sql statements are executed
-     **/
-    @Bean
-    public CommandLineRunner init(DataSource ds) {
-        return args -> {
-            ScriptUtils.executeSqlScript(ds.getConnection(), initSqlScript);
-        };
-    }
 }

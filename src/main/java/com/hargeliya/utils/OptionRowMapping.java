@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class OptionRowMapping implements RowMapper<ThemeOption> {
     @Override
     public ThemeOption mapRow(ResultSet rs, int i) throws SQLException {
-        return new ThemeOption(rs.getInt("idOption"),
+        return new ThemeOption(rs.getLong("idOption"),
                 rs.getString("nameOption"),
                 rs.getInt("quantity"),
                 rs.getInt("idTheme"));

@@ -13,7 +13,7 @@ public class ThemeRowMapper implements RowMapper<Theme> {
     @Override
     public Theme mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-        return new Theme(rs.getInt("idTheme"),
+        return new Theme(rs.getLong("idTheme"),
                 rs.getString("nameTheme"),
                 rs.getDate("startVoting"),
                 rs.getDate("endVoting"),
