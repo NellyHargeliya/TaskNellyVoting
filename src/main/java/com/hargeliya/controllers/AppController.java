@@ -6,11 +6,17 @@ import com.hargeliya.repository.ThemeOptionRepository;
 import com.hargeliya.repository.ThemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import java.util.*;
+import java.util.logging.Logger;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 
 /**
@@ -25,20 +31,13 @@ public class AppController {
     @Autowired
     private ThemeOptionRepository themeOptionRepo;
 
-
-    @Autowired
-    public AppController(ThemeRepository themeRepo, ThemeOptionRepository themeOptionRepo) {
-        this.themeRepo = themeRepo;
-        this.themeOptionRepo = themeOptionRepo;
-    }
-
     /**
      * This handles GET /theme
      * It returns all the theme details
      */
-    @RequestMapping(value="/themes", method = RequestMethod.GET)
-    public List<Theme> getAllTheme() {
-        return  themeRepo.getAllThemes();
+    @RequestMapping(value = "/themes", method = RequestMethod.GET)
+    public Iterable<Theme> getAllThemes() {
+        return themeRepo.findAll();
     }
 
     /**
@@ -48,48 +47,87 @@ public class AppController {
     @RequestMapping(value = "/themes", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
     public Theme addTheme(@RequestBody @Validated Theme theme) {
-        themeRepo.addTheme(theme);
-        return theme;
+        Theme themeInDataBase = themeRepo.getByName(theme.getNameTheme());
+        for (ThemeOption option : theme.getThemeOptions()) {
+            option.setQuantity(0);
+        }
+        return themeRepo.save(theme);
     }
 
     /**
      * This handles GET /theme/get?id=<give the id of theme>
      * This returns the theme detail with the given id
      */
-    @GetMapping("/get/{id}")
-    public Theme getThemeById(@RequestParam("id") int id) {
-        return themeRepo.getThemeById(id);
+    @GetMapping("/themes/{id}")
+    public Theme getThemeById(@RequestParam("id") long id) {
+        return themeRepo.findOne(id);
     }
 
-    @GetMapping("/open/themes")
-    public List<Theme> getOpenTheme() {
-        return themeRepo.getOpenTheme();
+    @GetMapping("/themes/{id}/open")
+    public void openTheme(@PathVariable("id") long id) {
+        Theme theme = themeRepo.findOne(id);
+        Date startDate = theme.getStartDate();
+        Date endDate = theme.getEndDate();
+        Link link = linkTo(methodOn(AppController.class).getThemeById(id)).withSelfRel();
+        theme.setUrlTheme(link.getHref());
+        theme.setStartDate(new Date());
+        themeRepo.save(theme);
     }
 
-    @GetMapping("/closed/themes")
-    public List<Theme> getCloseTheme() {
-        return themeRepo.getCloseTheme();
+    @GetMapping("/themes/{id}/close")
+    public void getCloseTheme(@PathVariable("id") long id) {
+        Theme theme = themeRepo.findOne(id);
+        Date startDate = theme.getStartDate();
+        Date endDate = theme.getEndDate();
+        theme.setEndDate(new Date());
+        themeRepo.save(theme);
     }
 
-    @GetMapping("/getTheme/{id}")
-    public int getThemeOptionQuantity(@RequestParam("id") int id) {
-        return themeOptionRepo.getThemeOptionQuantity(id);
+    /**
+     * Opened themes in DataBase
+     *
+     * @return the set of all opened themes
+     */
+    @RequestMapping(value = "/opened", method = RequestMethod.GET)
+    public Set<Theme> getAllOpenedThemes() {
+        return themeRepo.getOpenedThemes();
+    }
+    /**
+     * @param id - the ID of the Theme
+     * @param idOoption - the ID of the Option
+     * @return the Theme of its Options
+     */
+    @PutMapping("/themes/{id}/{idOption}")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public Theme voteRegistration(@PathVariable("id") long id, @PathVariable("idOption") long idOoption) {
+        Theme theme = themeRepo.findOne(id);
+        ThemeOption themeOption = themeOptionRepo.findOne(idOoption);
+
+        themeOption.setQuantity(themeOption.getQuantity() + 1);
+        themeOptionRepo.save(themeOption);
+        return theme;
     }
 
-    @PostMapping
-    public ThemeOption addOptions(@RequestBody @Validated ThemeOption themeOption) {
-        themeOptionRepo.addOptions(themeOption);
-        return themeOption;
+
+    @RequestMapping(value = "/show/{id}", method = RequestMethod.GET)
+    public Map<String, String> showStatistics(@PathVariable("id") long id) {
+        Theme theme = themeRepo.findOne(id);
+        Map<String, String> result = new HashMap<>();
+        result.put("Theme", theme.getNameTheme());
+        for (ThemeOption themeOption : theme.getThemeOptions()) {
+            result.put(themeOption.getNameOption(), themeOption.getQuantity().toString());
+        }
+        return result;
     }
 
-    @GetMapping
-    public void addVote(int id) {
-        themeOptionRepo.addVote(id);
+    /**
+     * Opens the JSP page with a new Theme add form
+     * @return ModelAndView
+     */
+    @RequestMapping(value = "/addtheme", method = RequestMethod.GET)
+    public ModelAndView openAddForm() {
+        return new ModelAndView("/addTheme");
     }
 
-    @GetMapping("/getOptions/{id}")
-    public List<ThemeOption> getAllOptionsByIdTheme(@RequestParam("id")int idTheme) {
-        return themeOptionRepo.getAllOptionsByIdTheme(idTheme);
-    }
 
 }
