@@ -24,12 +24,12 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @SpringBootTest
 public class VotingHargeliyaApplicationTests {
 
-    private static final String testTheme_1 = "testTheme_1";
-    private static final String testOption_1 = "optionTest_11";
-    private static final String testOption_2 = "optionTest_12";
-    private static final String testTheme_2 = "testTheme_2";
-    private static final String testOption_3 = "optionTest_21";
-    private static final String testOption_4 = "optionTest_22";
+    private static final String themeTest_1 = "themeTest_1";
+    private static final String optionTest_1 = "optionTest_11";
+    private static final String optionTest_2 = "optionTest_12";
+    private static final String themeTest_2 = "themeTest_2";
+    private static final String optionTest_3 = "optionTest_21";
+    private static final String optionTest_4 = "optionTest_22";
     private static boolean isSetUpDone = false;
     @Autowired
     private TestRestTemplate restTemplate;
@@ -53,16 +53,16 @@ public class VotingHargeliyaApplicationTests {
     @Transactional
     public void setUp() {
         if (isSetUpDone) return;
-        Theme theme = addTheme(testTheme_1, testOption_1, testOption_2);
+        Theme theme = addTheme(themeTest_1, optionTest_1, optionTest_2);
         restTemplate.postForEntity("/themes", theme, Theme.class);
 
-        theme = addTheme(testTheme_2, testOption_3, testOption_4);
+        theme = addTheme(themeTest_2, optionTest_3, optionTest_4);
         restTemplate.postForEntity("/themes", theme, Theme.class);
 
-        theme = addTheme("testTheme3", "optionTest31");
+        theme = addTheme("themeTest3", "optionTest31");
         restTemplate.postForEntity("/themes", theme, Theme.class);
 
-        restTemplate.exchange("/themes/1/start", HttpMethod.PUT, null, Theme.class);
+        restTemplate.exchange("/themes/1/open", HttpMethod.PUT, null, Theme.class);
         isSetUpDone = true;
     }
 
@@ -85,10 +85,10 @@ public class VotingHargeliyaApplicationTests {
         List<ThemeOption> options = theme.getThemeOptions();
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON_UTF8);
-        assertThat(theme.getNameTheme()).isEqualTo(testTheme_1);
+        assertThat(theme.getNameTheme()).isEqualTo(themeTest_1);
         assertThat(options.size()).isEqualTo(2);
-        assertThat(options.get(0).getNameOption()).isEqualTo(testOption_1);
-        assertThat(options.get(1).getNameOption()).isEqualTo(testOption_2);
+        assertThat(options.get(0).getNameOption()).isEqualTo(optionTest_1);
+        assertThat(options.get(1).getNameOption()).isEqualTo(optionTest_2);
     }
 
 
@@ -105,27 +105,27 @@ public class VotingHargeliyaApplicationTests {
     @Test
     @Transactional
     public void createExistingTheme() {
-        Theme theme = addTheme(testTheme_1);
+        Theme theme = addTheme(themeTest_1);
         ResponseEntity<Void> responseEntity = restTemplate.postForEntity("/themes", theme, Void.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @Test
     @Transactional
-    public void startAndStopTheme() {
-        ResponseEntity<Theme> responseEntity = restTemplate.exchange("/themes/2/start",
+    public void openAndEndTheme() {
+        ResponseEntity<Theme> responseEntity = restTemplate.exchange("/themes/2/open",
                 HttpMethod.PUT, null, Theme.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
-        responseEntity = restTemplate.exchange("/themes/2/stop", HttpMethod.PUT, null, Theme.class);
+        responseEntity = restTemplate.exchange("/themes/2/end", HttpMethod.PUT, null, Theme.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
         responseEntity = restTemplate.getForEntity("/themes/2", Theme.class);
         Theme result = responseEntity.getBody();
         assertThat(result.getStartDate()).isNotNull();
         assertThat(result.getEndDate()).isNotNull();
         assertThat(result.getUrlTheme()).isNotNull();
-        responseEntity = restTemplate.exchange("/themes/2/start", HttpMethod.PUT, null, Theme.class);
+        responseEntity = restTemplate.exchange("/themes/2/open", HttpMethod.PUT, null, Theme.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.METHOD_NOT_ALLOWED);
-        responseEntity = restTemplate.exchange("/themes/2/stop", HttpMethod.PUT, null, Theme.class);
+        responseEntity = restTemplate.exchange("/themes/2/end", HttpMethod.PUT, null, Theme.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.METHOD_NOT_ALLOWED);
     }
 
@@ -138,7 +138,7 @@ public class VotingHargeliyaApplicationTests {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON_UTF8);
         assertThat(openedThemes.length).isEqualTo(1);
-        assertThat(openedThemes[0].getNameTheme()).isEqualTo(testTheme_1);
+        assertThat(openedThemes[0].getNameTheme()).isEqualTo(themeTest_1);
         assertThat(openedThemes[0].getIdTheme()).isEqualTo(1);
     }
 
@@ -156,7 +156,7 @@ public class VotingHargeliyaApplicationTests {
     @Test
     @Transactional
     public void getInform() {
-        ResponseEntity<Theme> responseEntity = restTemplate.getForEntity("/statistics/1", Theme.class);
+        ResponseEntity<Theme> responseEntity = restTemplate.getForEntity("/show/1", Theme.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
