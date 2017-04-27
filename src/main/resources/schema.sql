@@ -2,8 +2,8 @@ drop table if exists `theme`;
 CREATE TABLE THEME (
   idTheme     INTEGER NOT NULL AUTO_INCREMENT,
   nameTheme   VARCHAR(50),
-  startVoting DATE,
-  endVoting   DATE,
+  startDate DATE,
+  endDate   DATE,
   urlTheme    VARCHAR(100),
   PRIMARY KEY (idTheme)
 );
