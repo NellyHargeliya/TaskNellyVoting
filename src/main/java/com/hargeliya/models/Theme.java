@@ -36,6 +36,12 @@ public class Theme implements Serializable {
     @Size(max = 100)
     private String urlTheme;
 
+    public Theme(Long idTheme, String nameTheme, Date startVoting, Date endVoting, String urlTheme) {
+    }
+
+    public Theme() {
+    }
+
     public Long getIdTheme() {
         return idTheme;
     }

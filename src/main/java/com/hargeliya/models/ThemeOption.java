@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
+@JsonIgnoreProperties
 @Entity
 public class ThemeOption implements Serializable {
     @Id
@@ -25,6 +26,12 @@ public class ThemeOption implements Serializable {
     @JoinColumn(name = "idTtheme")
     @JsonBackReference
     private Theme theme;
+
+    public ThemeOption(Long idOption, String nameOption, int quantity, int idTheme) {
+    }
+
+    public ThemeOption() {
+    }
 
     public Long getIdOption() {
         return idOption;
