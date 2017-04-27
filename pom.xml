@@ -65,6 +65,11 @@
 			<artifactId>spring-data-jpa</artifactId>
 			<version>1.10.5.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugin-tools</groupId>
+			<artifactId>maven-plugin-annotations</artifactId>
+			<version>3.3</version>
+		</dependency>
 
 	</dependencies>
 
