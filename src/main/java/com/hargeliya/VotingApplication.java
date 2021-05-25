@@ -20,8 +20,7 @@ public class VotingApplication extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(VotingApplication.class, args)
-                .registerShutdownHook();
+        SpringApplication.run(VotingApplication.class, args).registerShutdownHook();
     }
 
 }
