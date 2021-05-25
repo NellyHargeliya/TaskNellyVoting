@@ -159,6 +159,11 @@ public class VotingHargeliyaApplicationTests {
         ResponseEntity<Theme> responseEntity = restTemplate.getForEntity("/show/1", Theme.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
-
+    @Test
+    @Transactional
+    public void getInform2() {
+        ResponseEntity<Theme> responseEntity = restTemplate.getForEntity("/show/1", Theme.class);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
 
 }
